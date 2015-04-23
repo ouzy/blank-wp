@@ -6,7 +6,7 @@
 
 // Project configuration
 var project 	= 'somelikeitneat', // Project name, used for build zip.
-	url 		= 'localhost:8888', // Local Development URL for BrowserSync. Change as-needed.
+	url 		= 'somelikeitneat.dev', // Local Development URL for BrowserSync. Change as-needed.
 	build 		= './build/', // Files that you want to package into a zip go here
 	vendors		= './library/vendors/',
 	source 		= './assets/', 	// Your main project assets and naming 'source' instead of 'src' to avoid confusion with gulp.src
@@ -183,7 +183,11 @@ gulp.task('cleanupFinal', function() {
  * there that need to get moved as well. So I put the library directory into its own task. Excluding src because, well, we don't want to
  * distribute uniminified/unoptimized files. And, uh, grabbing screenshot.png cause I'm janky like that!
 */
-
+gulp.task('buildPhp', function() {
+	return gulp.src(themeBuild)
+		.pipe(gulp.dest(build))
+		.pipe(notify({ message: 'Moving files complete', onLast: true }));
+});
 
 // Copy Library to Build
 gulp.task('buildAssets', function() {
@@ -233,16 +237,16 @@ gulp.task('buildImages', function() {
 
 // Package Distributable Theme
 gulp.task('build', function(cb) {
-	runSequence('styles', 'cleanup', 'js', 'buildLibrary', 'buildAssets', 'buildImages', 'buildZip','cleanupFinal', cb);
+	runSequence('styles', 'cleanup', 'js', 'buildPhp', 'buildLibrary', 'buildAssets', 'buildImages', 'buildZip','cleanupFinal', cb);
 });
 
 // Watch Task
-gulp.task('default', ['styles', 'js', 'jsHint', 'images', 'browser-sync'], function () {
+gulp.task('default', ['styles', 'js', 'jsHint', 'images', 'browser-sync', 'phpcs'], function () {
 	gulp.watch(source+"sass/**/*.scss", ['styles']);
 	gulp.watch(source+'js/app/**/*.js', ['js', browserSync.reload]);
 	gulp.watch(source+'js/app/**/*.js', ['jsHint']);
 	gulp.watch(source+'img**/*.{png,jpg,gif}', ['images']);
-	
+	gulp.watch( phpSource, ['phpcs'] );
 });
 
 
