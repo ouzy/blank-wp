@@ -2,11 +2,11 @@
 
 To be used with MAMP
 Built on top of Some Like it Neat
-** Gulp
-** Bourbon (+ Neat and Bitters)
-** Underscores
-** Sass
-** other good stuff
+* Gulp
+* Bourbon (+ Neat and Bitters)
+* Underscores
+* Sass
+* other good stuff
 
 Set to serve at localhost:3000 (you still need to run MAMP at localhost:8888).
 
